@@ -6,6 +6,7 @@ except ImportError:
         "Please install it with `pip install gdown` and try again."
     )
 from urllib import request
+import pathlib
 
 import progressbar
 
@@ -57,10 +58,11 @@ def download_models(specific_models=None):
         if os.path.exists(model_path):
             continue
         print(f"Downloading {model_name} from {url}...")
-        if D_STEM in url:
-            gdown.download(url, model_path, quiet=False)
-        else:
-            request.urlretrieve(url, model_path, show_progress)
+        if not pathlib.Path(model_path).exists():
+            if D_STEM in url:
+                gdown.download(url, model_path, quiet=False)
+            else:
+                request.urlretrieve(url, model_path, show_progress)
         print("Done.")
 
 
